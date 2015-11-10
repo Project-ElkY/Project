@@ -40,15 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElkYPlayer.cs" />
     <Compile Include="Helpers\CardValuationType.cs" />
     <Compile Include="Helpers\HandStrengthValuation.cs" />
-    <Compile Include="InitialHandEvaluation.cs" />
-    <Compile Include="MonteCarloAnalysis.cs" />
+    <Compile Include="Helpers\InitialHandEvaluation.cs" />
+    <Compile Include="Helpers\MonteCarloAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmartPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Hand_Evaluator\Hand Evaluator\HandEvaluator\HandEvaluator.csproj">
+    <ProjectReference Include="..\HandEvaluator\HandEvaluator.csproj">
       <Project>{57836673-fe81-4367-a4eb-aaa46fb954d2}</Project>
       <Name>HandEvaluator</Name>
     </ProjectReference>

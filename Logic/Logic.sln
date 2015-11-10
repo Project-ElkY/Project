@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI", "AI\AI.csproj", "{AFD0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{635DB8CE-4C9E-4F7A-8FBB-AFE106705A0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandEvaluator", "..\Hand_Evaluator\Hand Evaluator\HandEvaluator\HandEvaluator.csproj", "{57836673-FE81-4367-A4EB-AAA46FB954D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandEvaluator", "HandEvaluator\HandEvaluator.csproj", "{57836673-FE81-4367-A4EB-AAA46FB954D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
