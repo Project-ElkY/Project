@@ -1,4 +1,4 @@
-﻿namespace TexasHoldem.AI
+﻿namespace TexasHoldem.AI.Helpers
 {
     using System;
     using TexasHoldem.Logic.Cards;
@@ -25,8 +25,8 @@
 
         public static double PreFlop(Card firstCard, Card secondCard)
         {
-            int row = Math.Abs((int)firstCard.Type - 2 - (int)secondCard.Type - 2);
-            int col = Math.Abs((int)firstCard.Type - 2 - (int)secondCard.Type - 2);
+            int row = 13 - ((int)firstCard.Type - 1);
+            int col = 13 - ((int)secondCard.Type - 1);
 
             return StartingHandRecommendationPercentage[row, col];
         }

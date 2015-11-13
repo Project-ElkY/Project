@@ -1,4 +1,4 @@
-﻿namespace AI.Helpers
+﻿namespace TexasHoldem.AI.Helpers
 {
     using TexasHoldem.Logic.Cards;
 

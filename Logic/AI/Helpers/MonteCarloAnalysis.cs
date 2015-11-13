@@ -1,4 +1,4 @@
-﻿namespace TexasHoldem.AI
+﻿namespace TexasHoldem.AI.Helpers
 {
     using HoldemHand;
 

@@ -1,4 +1,4 @@
-﻿namespace AI
+﻿namespace TexasHoldem.AI
 {
     using System;
     using Helpers;
