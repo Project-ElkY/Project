@@ -1,6 +1,8 @@
 ﻿namespace TexasHoldem.AI
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Helpers;
     using TexasHoldem.AI;
     using TexasHoldem.Logic;
@@ -16,9 +18,8 @@
         }
 
         public override void EndRound(EndRoundContext context)
-        {
+        { 
             base.EndRound(context);
-
         }
 
         public override PlayerAction GetTurn(GetTurnContext context)
@@ -37,11 +38,32 @@
                 }
                 else if (playHand < 80)
                 {
-                    return PlayerAction.Raise(context.SmallBlind * 2);
+                    if (context.SmallBlind * 2 < context.MoneyLeft)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * 2);
+                    }
+                    else
+                    {
+                        int putMoney = context.MoneyLeft;
+
+                        if (putMoney != 0)
+                        {
+                            return PlayerAction.Raise(putMoney);
+                        }
+
+                        return PlayerAction.CheckOrCall();
+                    }                    
                 }
                 else
                 {
-                    return PlayerAction.Raise(context.MoneyLeft);
+                    int putMoney = context.MoneyLeft;
+
+                    if (putMoney != 0)
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+
+                    return PlayerAction.CheckOrCall();
                 }
             }
 
@@ -52,9 +74,53 @@
                 var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
                 var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
 
-                // How to get the community hands
+                string playerHand = playerFirstHand + " " + playerSecondHand;
+                string openCards = string.Empty;
 
-                return PlayerAction.CheckOrCall();
+                foreach (var item in this.CommunityCards)
+                {
+                    openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
+                }
+
+                var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
+
+                if (chance < 45)
+                {
+                    return PlayerAction.Fold();
+                }
+                else if (chance < 70)
+                {
+                    return PlayerAction.CheckOrCall();
+                }
+                else if (chance < 80)
+                {
+                    if (context.SmallBlind * 2 < context.MoneyLeft)
+                    {
+                        return PlayerAction.Raise(context.SmallBlind * 2);
+                    }
+                    else
+                    {
+                        int putMoney = context.MoneyLeft;
+
+                        if (putMoney != 0)
+                        {
+                            return PlayerAction.Raise(putMoney);
+                        }
+
+                        return PlayerAction.CheckOrCall();
+                    }
+                }
+                else
+                {
+                    int putMoney = context.MoneyLeft;
+
+                    if (putMoney != 0)
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
             }
 
             return PlayerAction.CheckOrCall();
