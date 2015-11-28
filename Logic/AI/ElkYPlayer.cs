@@ -31,15 +31,6 @@
 
         public override void EndGame(EndGameContext context)
         {
-            if (context.WinnerName == this.Name)
-            {
-                GamesWon.PlayerWins++;
-            }
-            else
-            {
-                GamesWon.PlayerLosses++;
-            }
-            GamesWon.TotalGames++;
             base.EndGame(context);
         }
 

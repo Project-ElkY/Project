@@ -46,7 +46,6 @@
     <Compile Include="Helpers\InitialHandEvaluation.cs" />
     <Compile Include="Helpers\MonteCarloAnalysis.cs" />
     <Compile Include="Helpers\ParseHandToString.cs" />
-    <Compile Include="Helpers\GamesWon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmartPlayer.cs" />
     <Compile Include="Strategy\ElkyPlayerStrategy.cs" />

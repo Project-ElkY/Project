@@ -8,16 +8,15 @@
 
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
-        public ElkyPlayerStrategy(int fold, int call, int raise, int allIn)
+        public ElkyPlayerStrategy(int fold, int call, int raise)
         {
             this.Fold = fold;
             this.Call = call;
             this.Raise = raise;
-            this.AllIn = allIn;
         }
 
         public ElkyPlayerStrategy()
-            : this(45, 70, 80, 90)
+            : this(45, 70, 80)
         { }
 
         public int Fold { get; set; }
@@ -25,8 +24,6 @@
         public int Call { get; set; }
 
         public int Raise { get; set; }
-
-        public int AllIn { get; set; }
 
         public PlayerAction MakeTurn(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
@@ -70,8 +67,7 @@
             {
                 return PlayerAction.CheckOrCall();
             }
-
-            else if (chance <= this.Raise)
+            else if (chance < this.Raise)
             {
                 if (context.SmallBlind * 2 < context.MoneyLeft)
                 {
@@ -89,30 +85,15 @@
                     return PlayerAction.CheckOrCall();
                 }
             }
-            else if (chance <= this.AllIn)
-            {
-                int putMoney = context.MoneyLeft;
-                var pot = context.CurrentPot;
-                if (putMoney != 0)
-                {
-                    if (putMoney > pot && pot > 0)
-                    {
-                        return PlayerAction.Raise(pot);
-                    }
-                    else
-                    {
-                        return PlayerAction.Raise(putMoney);
-                    }
-                }
-                return PlayerAction.CheckOrCall();
-            }
             else
             {
                 int putMoney = context.MoneyLeft;
+
                 if (putMoney != 0)
                 {
                     return PlayerAction.Raise(putMoney);
                 }
+
                 return PlayerAction.CheckOrCall();
             }
         }
