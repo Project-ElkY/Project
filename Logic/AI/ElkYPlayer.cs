@@ -4,6 +4,7 @@
     using global::AI.Strategy;
     using System.Collections.Generic;
     using Helpers;
+    using System.Linq;
 
     public class ElkYPlayer : BasePlayer
     {
