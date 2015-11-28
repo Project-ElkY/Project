@@ -10,10 +10,18 @@
 
     public class ElkYPlayer : BasePlayer
     {
+        public ElkYPlayer()
+            :base()
+        {
+            MyGameStartegy.Fold = 45;
+            MyGameStartegy.Call = 70;
+            MyGameStartegy.Rise = 80;
+        }
+
         public override string Name { get; } = "ElkYPlayer";
 
         public override void StartGame(StartGameContext context)
-        {
+        {            
             base.StartGame(context);
         }
 
@@ -26,89 +34,49 @@
         {
             if (context.RoundType == GameRoundType.PreFlop)
             {
-                var playHand = InitialHandEvaluation.PreFlop(this.FirstCard, this.SecondCard);
-
-                if (playHand < 45)
-                {
-                    return PlayerAction.Fold();
-                }
-                else if (playHand < 70)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-                else if (playHand < 80)
-                {
-                    if (context.SmallBlind * 2 < context.MoneyLeft)
-                    {
-                        return PlayerAction.Raise(context.SmallBlind * 2);
-                    }
-                    else
-                    {
-                        int putMoney = context.MoneyLeft;
-
-                        if (putMoney != 0)
-                        {
-                            return PlayerAction.Raise(putMoney);
-                        }
-
-                        return PlayerAction.CheckOrCall();
-                    }                    
-                }
-                else
-                {
-                    int putMoney = context.MoneyLeft;
-
-                    if (putMoney != 0)
-                    {
-                        return PlayerAction.Raise(putMoney);
-                    }
-
-                    return PlayerAction.CheckOrCall();
-                }
+                PlayerAction act = PreFlopAction(context);
+                return act;
             }
 
             if (context.RoundType == GameRoundType.Flop || 
                 context.RoundType == GameRoundType.River || 
                 context.RoundType == GameRoundType.Turn)
             {
-                var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
-                var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
+                PlayerAction act = FlopAction(context);
+                return act;                
+            }
 
-                string playerHand = playerFirstHand + " " + playerSecondHand;
-                string openCards = string.Empty;
+            return PlayerAction.CheckOrCall();
+        }
 
-                foreach (var item in this.CommunityCards)
+        private PlayerAction FlopAction(GetTurnContext context)
+        {
+            var playerFirstHand = ParseHandToString.GenerateStringFromCard(this.FirstCard);
+            var playerSecondHand = ParseHandToString.GenerateStringFromCard(this.SecondCard);
+
+            string playerHand = playerFirstHand + " " + playerSecondHand;
+            string openCards = string.Empty;
+
+            foreach (var item in this.CommunityCards)
+            {
+                openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
+            }
+
+            var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
+
+            if (chance < MyGameStartegy.Fold)
+            {
+                return PlayerAction.Fold();
+            }
+            else if (chance < MyGameStartegy.Call)
+            {
+                return PlayerAction.CheckOrCall();
+            }
+            else if (chance < MyGameStartegy.Rise)
+            {
+                if (context.SmallBlind * 2 < context.MoneyLeft)
                 {
-                    openCards += ParseHandToString.GenerateStringFromCard(item) + " ";
-                }
-
-                var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
-
-                if (chance < 45)
-                {
-                    return PlayerAction.Fold();
-                }
-                else if (chance < 70)
-                {
-                    return PlayerAction.CheckOrCall();
-                }
-                else if (chance < 80)
-                {
-                    if (context.SmallBlind * 2 < context.MoneyLeft)
-                    {
-                        return PlayerAction.Raise(context.SmallBlind * 2);
-                    }
-                    else
-                    {
-                        int putMoney = context.MoneyLeft;
-
-                        if (putMoney != 0)
-                        {
-                            return PlayerAction.Raise(putMoney);
-                        }
-
-                        return PlayerAction.CheckOrCall();
-                    }
+                    return PlayerAction.Raise(context.SmallBlind * 2);
                 }
                 else
                 {
@@ -122,8 +90,61 @@
                     return PlayerAction.CheckOrCall();
                 }
             }
+            else
+            {
+                int putMoney = context.MoneyLeft;
 
-            return PlayerAction.CheckOrCall();
+                if (putMoney != 0)
+                {
+                    return PlayerAction.Raise(putMoney);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
+        }
+
+        private PlayerAction PreFlopAction(GetTurnContext context)
+        {
+
+            var playHand = InitialHandEvaluation.PreFlop(this.FirstCard, this.SecondCard);
+
+            if (playHand < MyGameStartegy.Fold)
+            {
+                return PlayerAction.Fold();
+            }
+            else if (playHand < MyGameStartegy.Call)
+            {
+                return PlayerAction.CheckOrCall();
+            }
+            else if (playHand < MyGameStartegy.Rise)
+            {
+                if (context.SmallBlind * 2 < context.MoneyLeft)
+                {
+                    return PlayerAction.Raise(context.SmallBlind * 2);
+                }
+                else
+                {
+                    int putMoney = context.MoneyLeft;
+
+                    if (putMoney != 0)
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+
+                    return PlayerAction.CheckOrCall();
+                }
+            }
+            else
+            {
+                int putMoney = context.MoneyLeft;
+
+                if (putMoney != 0)
+                {
+                    return PlayerAction.Raise(putMoney);
+                }
+
+                return PlayerAction.CheckOrCall();
+            }
         }
     }
 }
