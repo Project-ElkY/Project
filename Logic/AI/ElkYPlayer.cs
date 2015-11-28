@@ -10,21 +10,14 @@
 
     public class ElkYPlayer : BasePlayer
     {
-        public ElkYPlayer()
-            :base()
-        {
-            MyGameStartegy.Fold = 45;
-            MyGameStartegy.Call = 70;
-            MyGameStartegy.Rise = 80;
-        }
-
         public override string Name { get; } = "ElkYPlayer";
 
         public override void StartGame(StartGameContext context)
-        {            
+        {
+            InitMyGameStartegy();
             base.StartGame(context);
         }
-
+        
         public override void EndRound(EndRoundContext context)
         { 
             base.EndRound(context);
@@ -47,6 +40,13 @@
             }
 
             return PlayerAction.CheckOrCall();
+        }
+
+        private void InitMyGameStartegy()
+        {
+            MyGameStartegy.Fold = 45;
+            MyGameStartegy.Call = 70;
+            MyGameStartegy.Rise = 80;
         }
 
         private PlayerAction FlopAction(GetTurnContext context)
