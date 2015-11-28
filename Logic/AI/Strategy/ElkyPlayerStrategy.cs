@@ -8,15 +8,16 @@
 
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
-        public ElkyPlayerStrategy(int fold, int call, int raise)
+        public ElkyPlayerStrategy(int fold, int call, int raise, int allIn)
         {
             this.Fold = fold;
             this.Call = call;
             this.Raise = raise;
+            this.AllIn = allIn;
         }
 
         public ElkyPlayerStrategy()
-            : this(45, 70, 80)
+            : this(45, 70, 80, 90)
         { }
 
         public int Fold { get; set; }
@@ -24,6 +25,8 @@
         public int Call { get; set; }
 
         public int Raise { get; set; }
+
+        public int AllIn { get; set; }
 
         public PlayerAction MakeTurn(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
@@ -84,6 +87,23 @@
 
                     return PlayerAction.CheckOrCall();
                 }
+            }
+            else if (chance <= this.AllIn)
+            {
+                int putMoney = context.MoneyLeft;
+                var pot = context.CurrentPot;
+                if (putMoney != 0)
+                {
+                    if (putMoney > pot && pot > 0)
+                    {
+                        return PlayerAction.Raise(pot);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+                }
+                return PlayerAction.CheckOrCall();
             }
             else
             {

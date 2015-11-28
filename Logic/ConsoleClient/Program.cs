@@ -12,17 +12,31 @@
 
         public static void Main()
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.BufferHeight = Console.WindowHeight = GameHeight;
-            Console.BufferWidth = Console.WindowWidth = GameWidth;
+            //Console.BackgroundColor = ConsoleColor.Black;
+            //Console.ForegroundColor = ConsoleColor.Gray;
+            //Console.BufferHeight = Console.WindowHeight = GameHeight;
+            //Console.BufferWidth = Console.WindowWidth = GameWidth;
 
-            ConsoleHelper.WriteOnConsole(GameHeight - 1, GameWidth - ProgramName.Length - 1, ProgramName, ConsoleColor.Green);
+            //ConsoleHelper.WriteOnConsole(GameHeight - 1, GameWidth - ProgramName.Length - 1, ProgramName, ConsoleColor.Green);
 
-            var consolePlayer1 = new ConsoleUiDecorator(new ElkYPlayer(), 0, GameWidth, 5);
-            var consolePlayer2 = new ConsoleUiDecorator(new SmartPlayer(), 6, GameWidth, 5);
-            ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(consolePlayer1, consolePlayer2);
-            game.Start();
+            //var consolePlayer1 = new ConsoleUiDecorator(new ElkYPlayer(), 0, GameWidth, 5);
+            //var consolePlayer2 = new ConsoleUiDecorator(new SmartPlayer(), 6, GameWidth, 5);
+
+
+            var player1 = new ElkYPlayer();
+            var player2 = new SmartPlayer();
+
+            for (int i = 0; i < 100; i++)
+            {
+                ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(player1, player2);
+                game.Start();
+
+            }
+
+            var playerWins = GamesWon.PlayerWins;
+            var allgames = GamesWon.TotalGames;
+
+            Console.WriteLine("Games won: {0}", playerWins);
         }
     }
 }
