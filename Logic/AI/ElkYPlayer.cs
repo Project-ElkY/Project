@@ -8,7 +8,7 @@
         private IElkyPlayerStrategy strategy;
 
         public ElkYPlayer(IElkyPlayerStrategy strategy)
-            :base()
+            : base()
         {
             this.strategy = strategy;
         }
@@ -18,14 +18,14 @@
         { }
 
         public override string Name { get; } = "ElkYPlayer";
-        
+
         public override void StartGame(StartGameContext context)
         {
             base.StartGame(context);
         }
-        
+
         public override void EndRound(EndRoundContext context)
-        { 
+        {
             base.EndRound(context);
         }
 
@@ -33,7 +33,7 @@
         {
             base.EndGame(context);
         }
-        
+
         public override PlayerAction GetTurn(GetTurnContext context)
         {
             return strategy.MakeTurn(context, this.FirstCard, this.SecondCard, this.CommunityCards);

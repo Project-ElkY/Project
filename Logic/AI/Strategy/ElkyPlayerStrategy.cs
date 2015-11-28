@@ -16,7 +16,7 @@
         }
 
         public ElkyPlayerStrategy()
-            :this(45, 70, 80)
+            : this(45, 70, 80)
         { }
 
         public int Fold { get; set; }
@@ -43,7 +43,7 @@
 
             return PlayerAction.CheckOrCall();
         }
-        
+
         private PlayerAction FlopAction(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
             var playerFirstHand = ParseHandToString.GenerateStringFromCard(firstCard);
