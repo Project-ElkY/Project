@@ -7,6 +7,7 @@
 
     public class ElkYPlayer : BasePlayer
     {
+        private IList<PlayerActionAndName> opponentActions = new List<PlayerActionAndName>();
         private IElkyPlayerStrategy strategy;
 
         public ElkYPlayer(IElkyPlayerStrategy strategy)
@@ -54,6 +55,13 @@
 
         public override void EndRound(EndRoundContext context)
         {
+            var opponentMoves = context.RoundActions.Where(x => x.PlayerName != this.Name);
+
+            foreach (var oponentAction in opponentMoves)
+            {
+                this.opponentActions.Add(oponentAction);
+            }
+
             base.EndRound(context);
         }
 
