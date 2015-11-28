@@ -22,21 +22,26 @@
             //var consolePlayer1 = new ConsoleUiDecorator(new ElkYPlayer(), 0, GameWidth, 5);
             //var consolePlayer2 = new ConsoleUiDecorator(new SmartPlayer(), 6, GameWidth, 5);
 
-
             var player1 = new ElkYPlayer();
             var player2 = new SmartPlayer();
 
-            for (int i = 0; i < 100; i++)
+            for (int j = 0; j < 10; j++)
             {
-                ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(player1, player2);
-                game.Start();
+                for (int i = 0; i < 100; i++)
+                {
+                    ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(player1, player2);
+                    game.Start();
+                }
 
+                var playerWins = GamesWon.PlayerWins;
+                var allgames = GamesWon.TotalGames;
+
+                Console.WriteLine("Games won: {0}", playerWins);
+
+                GamesWon.PlayerWins = 0;
+                GamesWon.PlayerLosses = 0;
+                GamesWon.TotalGames = 0;
             }
-
-            var playerWins = GamesWon.PlayerWins;
-            var allgames = GamesWon.TotalGames;
-
-            Console.WriteLine("Games won: {0}", playerWins);
         }
     }
 }

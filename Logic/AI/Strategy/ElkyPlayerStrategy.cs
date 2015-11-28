@@ -17,7 +17,7 @@
         }
 
         public ElkyPlayerStrategy()
-            : this(45, 70, 80, 90)
+            : this(33, 70, 80, 95)
         { }
 
         public int Fold { get; set; }
