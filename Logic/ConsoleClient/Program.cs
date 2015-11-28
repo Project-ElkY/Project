@@ -21,12 +21,8 @@
 
             var consolePlayer1 = new ConsoleUiDecorator(new ElkYPlayer(), 0, GameWidth, 5);
             var consolePlayer2 = new ConsoleUiDecorator(new SmartPlayer(), 6, GameWidth, 5);
-
-            for (int i = 0; i < 100; i++)
-            {
-                ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(consolePlayer1, consolePlayer2);
-                game.Start();
-            }
+            ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(consolePlayer1, consolePlayer2);
+            game.Start();
         }
     }
 }
