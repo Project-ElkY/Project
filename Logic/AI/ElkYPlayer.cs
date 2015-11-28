@@ -2,6 +2,8 @@
 {
     using TexasHoldem.Logic.Players;
     using global::AI.Strategy;
+    using System.Collections.Generic;
+    using Helpers;
 
     public class ElkYPlayer : BasePlayer
     {
@@ -23,6 +25,32 @@
         {
             base.StartGame(context);
         }
+
+        public override void EndHand(EndHandContext context)
+        {
+            var openCards = context.ShowdownCards;
+            if (openCards.Count != 0)
+            {
+                foreach (var item in openCards)
+                {
+
+                    if (item.Key != this.Name)
+                    {
+                        List<TexasHoldem.Logic.Cards.Card> cards = new List<TexasHoldem.Logic.Cards.Card>();
+                        foreach (var card in item.Value)
+                        {
+                            var cardToAdd = new TexasHoldem.Logic.Cards.Card(card.Suit, card.Type);
+                            cards.Add(card);
+                        }
+
+                        var opponentSrenght = InitialHandEvaluation.PreFlop(cards[0], cards[1]);
+                    }
+                }
+            }
+
+            base.EndHand(context);
+        }
+
 
         public override void EndRound(EndRoundContext context)
         {
