@@ -11,7 +11,7 @@
     public class ElkYPlayer : BasePlayer
     {
         public override string Name { get; } = "ElkYPlayer";
-
+        
         public override void StartGame(StartGameContext context)
         {
             InitMyGameStartegy();
@@ -23,6 +23,11 @@
             base.EndRound(context);
         }
 
+        public override void EndGame(EndGameContext context)
+        {
+            base.EndGame(context);
+        }
+        
         public override PlayerAction GetTurn(GetTurnContext context)
         {
             if (context.RoundType == GameRoundType.PreFlop)
