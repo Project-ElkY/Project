@@ -8,13 +8,14 @@
 
     public class ElkYPlayer : BasePlayer
     {
-        private IList<PlayerActionAndName> opponentActions = new List<PlayerActionAndName>();
+        private IList<PlayerActionAndName> opponentActions;
         private IElkyPlayerStrategy strategy;
 
         public ElkYPlayer(IElkyPlayerStrategy strategy)
             : base()
         {
             this.strategy = strategy;
+            opponentActions = new List<PlayerActionAndName>();
         }
 
         public ElkYPlayer()
