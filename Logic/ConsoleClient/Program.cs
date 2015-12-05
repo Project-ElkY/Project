@@ -27,20 +27,20 @@
 
             for (int j = 0; j < 10; j++)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(player1, player2);
                     game.Start();
                 }
 
-                var playerWins = GamesWon.PlayerWins;
-                var allgames = GamesWon.TotalGames;
+                var playerWins = GamesStatistics.PlayerWins;
+                var allgames = GamesStatistics.TotalGames;
 
                 Console.WriteLine("Games won: {0}", playerWins);
 
-                GamesWon.PlayerWins = 0;
-                GamesWon.PlayerLosses = 0;
-                GamesWon.TotalGames = 0;
+                GamesStatistics.PlayerWins = 0;
+                GamesStatistics.PlayerLosses = 0;
+                GamesStatistics.TotalGames = 0;
             }
         }
     }

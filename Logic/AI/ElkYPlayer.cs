@@ -5,24 +5,29 @@
     using System.Collections.Generic;
     using Helpers;
     using System.Linq;
+    using System;
 
     public class ElkYPlayer : BasePlayer
     {
-        private IList<PlayerActionAndName> opponentActions;
+        private const int MaxFoldLevel = 65;
+        private const int MaxCallLevel = 77;
+        private const int MaxRiseLevel = 87;
+
+        private IList<double> opponentStrenghtList = new List<double>();
         private IElkyPlayerStrategy strategy;
 
         public ElkYPlayer(IElkyPlayerStrategy strategy)
             : base()
         {
             this.strategy = strategy;
-            opponentActions = new List<PlayerActionAndName>();
         }
 
         public ElkYPlayer()
             : this(new ElkyPlayerStrategy())
-        { }
+        {
+        }
 
-        public override string Name { get; } = "ElkYPlayer";
+        public override string Name { get; } = "ElkYPlayer" + Guid.NewGuid();
 
         public override void StartGame(StartGameContext context)
         {
@@ -47,6 +52,7 @@
                         }
 
                         var opponentSrenght = InitialHandEvaluation.PreFlop(cards[0], cards[1]);
+                        this.opponentStrenghtList.Add(opponentSrenght);
                     }
                 }
             }
@@ -57,13 +63,14 @@
 
         public override void EndRound(EndRoundContext context)
         {
+            /*
             var opponentMoves = context.RoundActions.Where(x => x.PlayerName != this.Name);
 
             foreach (var oponentAction in opponentMoves)
             {
-                this.opponentActions.Add(oponentAction);
+                this.opponentActions.Add((int)oponentAction.Action.Type);
             }
-
+            */
             base.EndRound(context);
         }
 
@@ -71,19 +78,94 @@
         {
             if (context.WinnerName == this.Name)
             {
-                GamesWon.PlayerWins++;
+                GamesStatistics.PlayerWins++;
             }
             else
             {
-                GamesWon.PlayerLosses++;
+                GamesStatistics.PlayerLosses++;
             }
-            GamesWon.TotalGames++;
+
+            GamesStatistics.TotalGames++;
+
+            if (GamesStatistics.TotalGames % 200 == 0)
+            {
+                ReEvaluateGameStrategy();
+            }
+
             base.EndGame(context);
+        }
+
+        public override void StartHand(StartHandContext context)
+        {
+            base.StartHand(context);
+        }
+
+        public override void StartRound(StartRoundContext context)
+        {
+            base.StartRound(context);
         }
 
         public override PlayerAction GetTurn(GetTurnContext context)
         {
-            return strategy.MakeTurn(context, this.FirstCard, this.SecondCard, this.CommunityCards);
+            return this.strategy.MakeTurn(context, this.FirstCard, this.SecondCard, this.CommunityCards);
+        }
+
+        private void ReEvaluateGameStrategy()
+        {
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.8)
+            {
+                if ((this.strategy.Fold += 12) < MaxFoldLevel)
+                {
+                    this.strategy.Fold += 12;
+                }
+
+                if ((this.strategy.Call += 5) < MaxCallLevel)
+                {
+                    this.strategy.Call += 5;
+                }
+
+                if ((this.strategy.Raise += 2) < MaxRiseLevel)
+                {
+                    this.strategy.Raise += 2;
+                }
+
+                return;
+            }
+
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
+            {
+                if ((this.strategy.Fold += 10) < MaxFoldLevel)
+                {
+                    this.strategy.Fold += 10;
+                }
+
+                if ((this.strategy.Call += 4) < MaxCallLevel)
+                {
+                    this.strategy.Call += 4;
+                }
+
+                if ((this.strategy.Raise += 1) < MaxRiseLevel)
+                {
+                    this.strategy.Raise += 1;
+                }
+
+                return;
+            }
+
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
+            {
+                if ((this.strategy.Fold += 7) < MaxFoldLevel)
+                {
+                    this.strategy.Fold += 7;
+                }
+
+                if ((this.strategy.Call += 3) < MaxCallLevel)
+                {
+                    this.strategy.Call += 3;
+                }
+
+                return;
+            }
         }
     }
 }
