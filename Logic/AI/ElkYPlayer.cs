@@ -13,13 +13,14 @@
         private const int MaxCallLevel = 77;
         private const int MaxRiseLevel = 87;
 
-        private IList<double> opponentStrenghtList = new List<double>();
+        private IList<double> opponentStrenghtList;
         private IElkyPlayerStrategy strategy;
 
         public ElkYPlayer(IElkyPlayerStrategy strategy)
             : base()
         {
             this.strategy = strategy;
+            this.opponentStrenghtList = new List<double>();
         }
 
         public ElkYPlayer()
