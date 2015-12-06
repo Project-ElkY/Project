@@ -1,6 +1,5 @@
 ﻿namespace TexasHoldem.AI.Helpers
 {
-    using System;
     using TexasHoldem.Logic.Cards;
 
     public static class InitialHandEvaluation

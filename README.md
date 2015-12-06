@@ -16,14 +16,13 @@ This is project designated to create an AI for a C# Texas Hold'em game.
 
 ### How it was created
 
-- Initial hand strenght evaluation using a simple table
+- Initial hand strength evaluation using a simple table
 
-- The player has a prederminated behaivor for the inital battles.
+- The player has a predetermined behavior for the initial battles.
 Than the strategy may change depending on the current win-to-lose ratio.
 
 - Usage of Monte Carlo algorithm to simulate the outcome of the current game
 and to influence the way of how The AI will play
-
  
 
 - - - - 
