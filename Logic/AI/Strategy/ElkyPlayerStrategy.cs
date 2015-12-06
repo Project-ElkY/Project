@@ -9,6 +9,7 @@
 
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
+        private const int PreFlopFoldLevel = 41;
         private const int MaxFoldLevel = 45;
         private const int MaxCallLevel = 75;
         private const int MaxRiseLevel = 82;
@@ -54,54 +55,29 @@
 
         public void ReEvaluateGameStrategy()
         {
-            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.8)
+            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.75)
             {
-                if ((this.Fold = 3) < MaxFoldLevel)
-                {
-                    this.Fold += 3;
-                }
-
-                if ((this.Call += 2) < MaxCallLevel)
-                {
-                    this.Call += 2;
-                }
-
-                if ((this.Raise += 1) < MaxRiseLevel)
-                {
-                    this.Raise += 1;
-                }
-
-                return;
+                this.Fold = 0;
+                this.Call = 30;
+                this.Raise = 45;
+                this.AllIn = 60;
             }
 
-            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.7)
+            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.65)
             {
-                if ((this.Fold += 2) < MaxFoldLevel)
-                {
-                    this.Fold += 2;
-                }
-
-                if ((this.Call += 1) < MaxCallLevel)
-                {
-                    this.Call += 1;
-                }
-
-                return;
-            }
-
-            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.6)
-            {
-                if ((this.Fold += 1) < MaxFoldLevel)
-                {
-                    this.Fold += 1;
-                }
-
-                return;
+                this.Fold = 25;
+                this.Call = 55;
+                this.Raise = 70;
+                this.AllIn = 85;
             }
         }
 
         private PlayerAction FlopAction(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
+            var moneyToCall = context.MoneyToCall;
+            var potMoney = context.CurrentPot;
+            var potAndCall = moneyToCall + potMoney;
+            var chanceToFold = moneyToCall / potAndCall;
             var playerFirstHand = ParseHandToString.GenerateStringFromCard(firstCard);
             var playerSecondHand = ParseHandToString.GenerateStringFromCard(secondCard);
 
@@ -114,8 +90,7 @@
             }
 
             var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
-
-            if (chance < this.Fold)
+            if (chance < chanceToFold || chance < this.Fold)
             {
                 return PlayerAction.Fold();
             }
@@ -176,15 +151,15 @@
 
             var playHand = InitialHandEvaluation.PreFlop(firstCard, secondCard);
 
-            if (playHand < this.Fold)
+            if (playHand <= PreFlopFoldLevel)
             {
                 return PlayerAction.Fold();
             }
-            else if (playHand < this.Call)
+            else if (playHand <= this.Call)
             {
                 return PlayerAction.CheckOrCall();
             }
-            else if (playHand < this.Raise)
+            else if (playHand <= this.Raise)
             {
                 if (context.SmallBlind * 2 < context.MoneyLeft)
                 {
@@ -201,6 +176,23 @@
 
                     return PlayerAction.CheckOrCall();
                 }
+            }
+            else if (playHand <= this.AllIn)
+            {
+                int putMoney = context.MoneyLeft;
+                var pot = context.CurrentPot;
+                if (putMoney != 0)
+                {
+                    if (putMoney > pot && pot > 0)
+                    {
+                        return PlayerAction.Raise(pot);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+                }
+                return PlayerAction.CheckOrCall();
             }
             else
             {
