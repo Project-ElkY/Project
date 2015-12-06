@@ -103,6 +103,10 @@
 
         private PlayerAction FlopAction(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
+            var moneyToCall = context.MoneyToCall;
+            var potMoney = context.CurrentPot;
+            var potAndCall = moneyToCall + potMoney;
+            var chanceToFold = moneyToCall / potAndCall;
             var playerFirstHand = ParseHandToString.GenerateStringFromCard(firstCard);
             var playerSecondHand = ParseHandToString.GenerateStringFromCard(secondCard);
 
@@ -115,8 +119,7 @@
             }
 
             var chance = MonteCarloAnalysis.CalculateWinChance(playerHand, openCards.Trim());
-
-            if (chance < this.Fold)
+            if (chance < chanceToFold || chance < this.Fold)
             {
                 return PlayerAction.Fold();
             }
