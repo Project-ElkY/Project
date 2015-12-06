@@ -2,8 +2,14 @@
 {
     using TexasHoldem.Logic.Cards;
 
+    /// <summary>
+    /// This class is used to evaluate the initial hand strength
+    /// </summary>
     public static class InitialHandEvaluation
     {
+        /// <summary>
+        /// All hands in poker, together with their corresponding odds of winning
+        /// </summary>
         private static readonly double[,] StartingHandRecommendationPercentage =
         {
              /*	A	K	Q	J	T	9	8	7	6	5	4	3	2 */
@@ -22,6 +28,12 @@
             { 57, 53, 49, 47, 44, 42, 40, 37, 37, 37, 36, 35, 51 } // 2
         };
 
+        /// <summary>
+        /// Finds the players hand strength
+        /// </summary>
+        /// <param name="firstCard">The first card of the player</param>
+        /// <param name="secondCard">The second card of the player</param>
+        /// <returns>The strength of the initial hand</returns>
         public static double PreFlop(Card firstCard, Card secondCard)
         {
             int row = 13 - ((int)firstCard.Type - 1);
