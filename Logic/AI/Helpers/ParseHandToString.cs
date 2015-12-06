@@ -2,8 +2,16 @@
 {
     using TexasHoldem.Logic.Cards;
 
+    /// <summary>
+    /// Converts the card from the game engine to strings used for game analysis
+    /// </summary>
     public static class ParseHandToString
     {
+        /// <summary>
+        /// Converts the card from the game engine to a string
+        /// </summary>
+        /// <param name="card">A card in a format from the game engine</param>
+        /// <returns>The card as a string</returns>
         public static string GenerateStringFromCard(Card card)
         {
             string result = string.Empty;
