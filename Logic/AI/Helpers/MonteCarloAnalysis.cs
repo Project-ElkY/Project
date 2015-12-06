@@ -2,10 +2,22 @@
 {
     using HoldemHand;
 
+    /// <summary>
+    /// Simulates the outcome of a given number of poker games
+    /// </summary>
     public static class MonteCarloAnalysis
     {
+        /// <summary>
+        /// How many games will be simulated
+        /// </summary>
         private const int GameTrials = 500; // 1000 or 250
 
+        /// <summary>
+        /// The method simulate the outcome of a poker game
+        /// </summary>
+        /// <param name="myCards">Those are the player cards</param>
+        /// <param name="openCards">Those are the open cards on the table</param>
+        /// <returns>The win ratio</returns>
         public static double CalculateWinChance(string myCards, string openCards)
         {
             ulong pocketmask = Hand.ParseHand(myCards);    
