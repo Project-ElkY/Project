@@ -9,6 +9,7 @@
 
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
+        private const int PreFlopFoldLevel = 41;
         private const int MaxFoldLevel = 45;
         private const int MaxCallLevel = 75;
         private const int MaxRiseLevel = 82;
@@ -176,15 +177,15 @@
 
             var playHand = InitialHandEvaluation.PreFlop(firstCard, secondCard);
 
-            if (playHand < this.Fold)
+            if (playHand <= PreFlopFoldLevel)
             {
                 return PlayerAction.Fold();
             }
-            else if (playHand < this.Call)
+            else if (playHand <= this.Call)
             {
                 return PlayerAction.CheckOrCall();
             }
-            else if (playHand < this.Raise)
+            else if (playHand <= this.Raise)
             {
                 if (context.SmallBlind * 2 < context.MoneyLeft)
                 {
@@ -201,6 +202,23 @@
 
                     return PlayerAction.CheckOrCall();
                 }
+            }
+            else if (playHand <= this.AllIn)
+            {
+                int putMoney = context.MoneyLeft;
+                var pot = context.CurrentPot;
+                if (putMoney != 0)
+                {
+                    if (putMoney > pot && pot > 0)
+                    {
+                        return PlayerAction.Raise(pot);
+                    }
+                    else
+                    {
+                        return PlayerAction.Raise(putMoney);
+                    }
+                }
+                return PlayerAction.CheckOrCall();
             }
             else
             {
