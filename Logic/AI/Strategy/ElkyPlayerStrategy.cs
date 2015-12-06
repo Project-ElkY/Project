@@ -8,13 +8,23 @@
     using TexasHoldem.Logic;
     using TexasHoldem.AI;
 
+    /// <summary>
+    /// The class will influence the player behaivor
+    /// </summary>
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
+        /// <summary>
+        /// It is used only in the PreFlop part of the game, and sets a higher level than usual.
+        /// </summary>
         private const int PreFlopFoldLevel = 41;
-        private const int MaxFoldLevel = 45;
-        private const int MaxCallLevel = 75;
-        private const int MaxRiseLevel = 82;
 
+        /// <summary>
+        /// A fully customizable constructor for the game strategy.
+        /// </summary>
+        /// <param name="fold">The maximum hand strength below which the player will fold.</param>
+        /// <param name="call">The maximum hand strength below which the player will Call.</param>
+        /// <param name="raise">The maximum hand strength below which the player will Rise.</param>
+        /// <param name="allIn">The maximum hand strength below which the player will play All-In.</param>
         public ElkyPlayerStrategy(int fold, int call, int raise, int allIn)
         {
             this.Fold = fold;
@@ -23,18 +33,41 @@
             this.AllIn = allIn;
         }
 
+        /// <summary>
+        /// Basic empty constructor
+        /// </summary>
         public ElkyPlayerStrategy()
             : this(33, 70, 80, 95)
         { }
 
+        /// <summary>
+        /// Sets the level below which the player will Fold.
+        /// </summary>
         public int Fold { get; set; }
 
+        /// <summary>
+        /// Sets the level below which the player will Call.
+        /// </summary>
         public int Call { get; set; }
 
+        /// <summary>
+        /// Sets the level below which the player will Raise.
+        /// </summary>
         public int Raise { get; set; }
 
+        /// <summary>
+        /// Sets the level below which the player will play All-In.
+        /// </summary>
         public int AllIn { get; set; }
 
+        /// <summary>
+        /// Decides what the player action will be.
+        /// </summary>
+        /// <param name="context">The given game context.</param>
+        /// <param name="firstCard">The player first card.</param>
+        /// <param name="secondCard">The player second card.</param>
+        /// <param name="communityCards">All open cards on the table.</param>
+        /// <returns>An PlayerAction instance.</returns>
         public PlayerAction MakeTurn(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
             if (context.RoundType == GameRoundType.PreFlop)
@@ -54,6 +87,9 @@
             return PlayerAction.CheckOrCall();
         }
 
+        /// <summary>
+        /// Sets a new behavior for the player depending the current loss ratio.
+        /// </summary>
         public void ReEvaluateGameStrategy()
         {
             if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.75)
@@ -73,6 +109,14 @@
             }
         }
 
+        /// <summary>
+        /// Decides what action to take when there are any open cards on the table. 
+        /// </summary>
+        /// <param name="context">The given game context.</param>
+        /// <param name="firstCard">The player first card.</param>
+        /// <param name="secondCard">The player second card.</param>
+        /// <param name="communityCards">All open cards on the table.</param>
+        /// <returns>An PlayerAction instance.</returns>
         private PlayerAction FlopAction(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)
         {
             var moneyToCall = context.MoneyToCall;
@@ -162,6 +206,13 @@
             }
         }
 
+        /// <summary>
+        /// Decides what action to take during the initial game stage. 
+        /// </summary>
+        /// <param name="context">The given game context.</param>
+        /// <param name="firstCard">The player first card.</param>
+        /// <param name="secondCard">The player second card.</param>
+        /// <returns>An PlayerAction instance.</returns>
         private PlayerAction PreFlopAction(GetTurnContext context, Card firstCard, Card secondCard)
         {
 
