@@ -5,9 +5,14 @@
     using TexasHoldem.Logic.Cards;
     using System.Collections.Generic;
     using TexasHoldem.Logic;
+    using TexasHoldem.AI;
 
     public class ElkyPlayerStrategy : IElkyPlayerStrategy
     {
+        private const int MaxFoldLevel = 45;
+        private const int MaxCallLevel = 75;
+        private const int MaxRiseLevel = 82;
+
         public ElkyPlayerStrategy(int fold, int call, int raise, int allIn)
         {
             this.Fold = fold;
@@ -45,6 +50,54 @@
             }
 
             return PlayerAction.CheckOrCall();
+        }
+
+        public void ReEvaluateGameStrategy()
+        {
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.8)
+            {
+                if ((this.Fold = 3) < MaxFoldLevel)
+                {
+                    this.Fold += 3;
+                }
+
+                if ((this.Call += 2) < MaxCallLevel)
+                {
+                    this.Call += 2;
+                }
+
+                if ((this.Raise += 1) < MaxRiseLevel)
+                {
+                    this.Raise += 1;
+                }
+
+                return;
+            }
+
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
+            {
+                if ((this.Fold += 2) < MaxFoldLevel)
+                {
+                    this.Fold += 2;
+                }
+
+                if ((this.Call += 1) < MaxCallLevel)
+                {
+                    this.Call += 1;
+                }
+
+                return;
+            }
+
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
+            {
+                if ((this.Fold += 1) < MaxFoldLevel)
+                {
+                    this.Fold += 1;
+                }
+
+                return;
+            }
         }
 
         private PlayerAction FlopAction(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards)

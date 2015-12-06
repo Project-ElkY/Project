@@ -8,9 +8,6 @@
 
     public class ElkYPlayer : BasePlayer
     {
-        private const int MaxFoldLevel = 45;
-        private const int MaxCallLevel = 75;
-        private const int MaxRiseLevel = 82;
 
         private IList<double> opponentStrenghtList;
         private IElkyPlayerStrategy strategy;
@@ -82,7 +79,7 @@
 
             if (GamesStatistics.TotalGames % 200 == 0)
             {
-                this.ReEvaluateGameStrategy();
+                this.strategy.ReEvaluateGameStrategy();
             }
 
             base.EndGame(context);
@@ -101,54 +98,6 @@
         public override PlayerAction GetTurn(GetTurnContext context)
         {
             return this.strategy.MakeTurn(context, this.FirstCard, this.SecondCard, this.CommunityCards);
-        }
-
-        private void ReEvaluateGameStrategy()
-        {
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.8)
-            {
-                if ((this.strategy.Fold += 3) < MaxFoldLevel)
-                {
-                    this.strategy.Fold += 3;
-                }
-
-                if ((this.strategy.Call += 2) < MaxCallLevel)
-                {
-                    this.strategy.Call += 2;
-                }
-
-                if ((this.strategy.Raise += 1) < MaxRiseLevel)
-                {
-                    this.strategy.Raise += 1;
-                }
-
-                return;
-            }
-
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
-            {
-                if ((this.strategy.Fold += 2) < MaxFoldLevel)
-                {
-                    this.strategy.Fold += 2;
-                }
-
-                if ((this.strategy.Call += 1) < MaxCallLevel)
-                {
-                    this.strategy.Call += 1;
-                }
-
-                return;
-            }
-
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
-            {
-                if ((this.strategy.Fold += 1) < MaxFoldLevel)
-                {
-                    this.strategy.Fold += 1;
-                }
-
-                return;
-            }
         }
     }
 }

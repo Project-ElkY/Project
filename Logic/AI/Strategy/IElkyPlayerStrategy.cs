@@ -13,5 +13,7 @@
         int Raise { get; set; }
 
         PlayerAction MakeTurn(GetTurnContext context, Card firstCard, Card secondCard, IReadOnlyCollection<Card> communityCards);
+
+        void ReEvaluateGameStrategy();
     }
 }
