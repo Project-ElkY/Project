@@ -77,7 +77,7 @@
 
             GamesStatistics.Instance().TotalGames++;
 
-            if (GamesStatistics.Instance().TotalGames % 35 == 0)
+            if (GamesStatistics.Instance().TotalGames % 70 == 0)
             {
                 this.strategy.ReEvaluateGameStrategy();
             }
