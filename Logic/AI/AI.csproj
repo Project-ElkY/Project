@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="ElkYPlayer.cs" />
     <Compile Include="Helpers\CardValuationType.cs" />
-    <Compile Include="Helpers\GamesWon.cs" />
+    <Compile Include="Helpers\GamesStatistics.cs" />
     <Compile Include="Helpers\HandStrengthValuation.cs" />
     <Compile Include="Helpers\InitialHandEvaluation.cs" />
     <Compile Include="Helpers\MonteCarloAnalysis.cs" />

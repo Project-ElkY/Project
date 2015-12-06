@@ -4,14 +4,13 @@
     using global::AI.Strategy;
     using System.Collections.Generic;
     using Helpers;
-    using System.Linq;
     using System;
 
     public class ElkYPlayer : BasePlayer
     {
-        private const int MaxFoldLevel = 65;
-        private const int MaxCallLevel = 77;
-        private const int MaxRiseLevel = 87;
+        private const int MaxFoldLevel = 49;
+        private const int MaxCallLevel = 68;
+        private const int MaxRiseLevel = 82;
 
         private IList<double> opponentStrenghtList;
         private IElkyPlayerStrategy strategy;
@@ -64,14 +63,6 @@
 
         public override void EndRound(EndRoundContext context)
         {
-            /*
-            var opponentMoves = context.RoundActions.Where(x => x.PlayerName != this.Name);
-
-            foreach (var oponentAction in opponentMoves)
-            {
-                this.opponentActions.Add((int)oponentAction.Action.Type);
-            }
-            */
             base.EndRound(context);
         }
 
@@ -90,7 +81,7 @@
 
             if (GamesStatistics.TotalGames % 200 == 0)
             {
-                ReEvaluateGameStrategy();
+                this.ReEvaluateGameStrategy();
             }
 
             base.EndGame(context);
@@ -115,34 +106,14 @@
         {
             if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.8)
             {
-                if ((this.strategy.Fold += 12) < MaxFoldLevel)
+                if ((this.strategy.Fold += 3) < MaxFoldLevel)
                 {
-                    this.strategy.Fold += 12;
+                    this.strategy.Fold += 3;
                 }
 
-                if ((this.strategy.Call += 5) < MaxCallLevel)
+                if ((this.strategy.Call += 2) < MaxCallLevel)
                 {
-                    this.strategy.Call += 5;
-                }
-
-                if ((this.strategy.Raise += 2) < MaxRiseLevel)
-                {
-                    this.strategy.Raise += 2;
-                }
-
-                return;
-            }
-
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
-            {
-                if ((this.strategy.Fold += 10) < MaxFoldLevel)
-                {
-                    this.strategy.Fold += 10;
-                }
-
-                if ((this.strategy.Call += 4) < MaxCallLevel)
-                {
-                    this.strategy.Call += 4;
+                    this.strategy.Call += 2;
                 }
 
                 if ((this.strategy.Raise += 1) < MaxRiseLevel)
@@ -153,16 +124,26 @@
                 return;
             }
 
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
             {
-                if ((this.strategy.Fold += 7) < MaxFoldLevel)
+                if ((this.strategy.Fold += 2) < MaxFoldLevel)
                 {
-                    this.strategy.Fold += 7;
+                    this.strategy.Fold += 2;
                 }
 
-                if ((this.strategy.Call += 3) < MaxCallLevel)
+                if ((this.strategy.Call += 1) < MaxCallLevel)
                 {
-                    this.strategy.Call += 3;
+                    this.strategy.Call += 1;
+                }
+
+                return;
+            }
+
+            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
+            {
+                if ((this.strategy.Fold += 1) < MaxFoldLevel)
+                {
+                    this.strategy.Fold += 1;
                 }
 
                 return;
