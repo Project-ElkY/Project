@@ -8,8 +8,8 @@
 
     public class ElkYPlayer : BasePlayer
     {
-        private const int MaxFoldLevel = 49;
-        private const int MaxCallLevel = 68;
+        private const int MaxFoldLevel = 45;
+        private const int MaxCallLevel = 75;
         private const int MaxRiseLevel = 82;
 
         private IList<double> opponentStrenghtList;
@@ -36,6 +36,7 @@
 
         public override void EndHand(EndHandContext context)
         {
+            /*
             var openCards = context.ShowdownCards;
             if (openCards.Count != 0)
             {
@@ -56,7 +57,7 @@
                     }
                 }
             }
-
+            */
             base.EndHand(context);
         }
 
