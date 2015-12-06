@@ -68,16 +68,16 @@
         {
             if (context.WinnerName == this.Name)
             {
-                GamesStatistics.PlayerWins++;
+                GamesStatistics.Instance().PlayerWins++;
             }
             else
             {
-                GamesStatistics.PlayerLosses++;
+                GamesStatistics.Instance().PlayerLosses++;
             }
 
-            GamesStatistics.TotalGames++;
+            GamesStatistics.Instance().TotalGames++;
 
-            if (GamesStatistics.TotalGames % 200 == 0)
+            if (GamesStatistics.Instance().TotalGames % 200 == 0)
             {
                 this.strategy.ReEvaluateGameStrategy();
             }

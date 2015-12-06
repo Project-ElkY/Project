@@ -33,14 +33,14 @@
                     game.Start();
                 }
 
-                var playerWins = GamesStatistics.PlayerWins;
-                var allgames = GamesStatistics.TotalGames;
+                var playerWins = GamesStatistics.Instance().PlayerWins;
+                var allgames = GamesStatistics.Instance().TotalGames;
 
                 Console.WriteLine("Games won: {0}", playerWins);
 
-                GamesStatistics.PlayerWins = 0;
-                GamesStatistics.PlayerLosses = 0;
-                GamesStatistics.TotalGames = 0;
+                GamesStatistics.Instance().PlayerWins = 0;
+                GamesStatistics.Instance().PlayerLosses = 0;
+                GamesStatistics.Instance().TotalGames = 0;
             }
         }
     }

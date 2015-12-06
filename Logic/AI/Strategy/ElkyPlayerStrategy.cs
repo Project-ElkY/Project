@@ -54,7 +54,7 @@
 
         public void ReEvaluateGameStrategy()
         {
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.8)
+            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.8)
             {
                 if ((this.Fold = 3) < MaxFoldLevel)
                 {
@@ -74,7 +74,7 @@
                 return;
             }
 
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.7)
+            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.7)
             {
                 if ((this.Fold += 2) < MaxFoldLevel)
                 {
@@ -89,7 +89,7 @@
                 return;
             }
 
-            if (GamesStatistics.PlayerLosses / GamesStatistics.TotalGames > 0.6)
+            if (GamesStatistics.Instance().PlayerLosses / GamesStatistics.Instance().TotalGames > 0.6)
             {
                 if ((this.Fold += 1) < MaxFoldLevel)
                 {

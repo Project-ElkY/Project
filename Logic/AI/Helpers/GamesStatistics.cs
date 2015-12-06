@@ -1,9 +1,30 @@
 ﻿namespace TexasHoldem.AI
 {
-    public static class GamesStatistics
+    public class GamesStatistics
     {
-        public static double PlayerWins = 0;
-        public static double PlayerLosses = 0;
-        public static double TotalGames = 0;
+        private static GamesStatistics instance;
+
+        private GamesStatistics()
+        {
+            this.PlayerWins = 0;
+            this.PlayerLosses = 0;
+            this.TotalGames = 0;
+        }
+
+        public double PlayerWins { get; set; }
+
+        public double PlayerLosses { get; set; }
+
+        public double TotalGames { get; set; }
+
+        public static GamesStatistics Instance()
+        {
+            if (instance == null)
+            {
+                instance = new GamesStatistics();
+            }
+
+            return instance;
+        }
     }
 }
