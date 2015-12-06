@@ -77,7 +77,7 @@
 
             GamesStatistics.TotalGames++;
 
-            if (GamesStatistics.TotalGames % 200 == 0)
+            if (GamesStatistics.TotalGames % 35 == 0)
             {
                 this.strategy.ReEvaluateGameStrategy();
             }
