@@ -1,5 +1,6 @@
 ﻿namespace AI.Strategy
 {
+    using System;
     using TexasHoldem.AI.Helpers;
     using TexasHoldem.Logic.Players;
     using TexasHoldem.Logic.Cards;
@@ -77,7 +78,7 @@
             var moneyToCall = context.MoneyToCall;
             var potMoney = context.CurrentPot;
             var potAndCall = moneyToCall + potMoney;
-            var chanceToFold = moneyToCall / potAndCall;
+            var chanceToFold = moneyToCall * 100 / (double)potAndCall;
             var playerFirstHand = ParseHandToString.GenerateStringFromCard(firstCard);
             var playerSecondHand = ParseHandToString.GenerateStringFromCard(secondCard);
 
@@ -96,6 +97,21 @@
             }
             else if (chance < this.Call)
             {
+                var isAllIn = context.IsAllIn;
+                int moneyToFold = Math.Min(context.SmallBlind * 2, context.MoneyLeft);
+                if (isAllIn)
+                {
+                    if (moneyToCall >= (context.MoneyLeft / 3))
+                    {
+                        return PlayerAction.Fold();
+                    }
+                    return PlayerAction.CheckOrCall();
+                }
+                if (moneyToCall > moneyToFold)
+                {
+                    return PlayerAction.Fold();
+                }
+
                 return PlayerAction.CheckOrCall();
             }
             else if (chance < this.Raise)

@@ -23,11 +23,11 @@
             //var consolePlayer2 = new ConsoleUiDecorator(new SmartPlayer(), 6, GameWidth, 5);
 
             var player1 = new ElkYPlayer();
-            var player2 = new SmartPlayer();
+            var player2 = new ElkYPlayer();
 
             for (int j = 0; j < 10; j++)
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     ITexasHoldemGame game = new TwoPlayersTexasHoldemGame(player1, player2);
                     game.Start();
