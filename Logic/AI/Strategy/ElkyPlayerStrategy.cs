@@ -220,6 +220,24 @@
 
             if (playHand <= PreFlopFoldLevel)
             {
+                // Perform a Bluff
+                if (GamesStatistics.Instance().TotalGames % 3 == 0)
+                {
+                    int putMoney = context.MoneyLeft;
+                    var pot = context.CurrentPot;
+                    if (putMoney != 0)
+                    {
+                        if (putMoney > pot && pot > 0)
+                        {
+                            return PlayerAction.Raise(pot);
+                        }
+                        else
+                        {
+                            return PlayerAction.Raise(putMoney);
+                        }
+                    }
+                }
+
                 return PlayerAction.Fold();
             }
             else if (playHand <= this.Call)
